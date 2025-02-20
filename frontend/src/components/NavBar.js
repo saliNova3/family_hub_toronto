@@ -6,14 +6,11 @@ import {
   Toolbar,
   IconButton,
   Typography,
-  InputBase,
   Box,
   Button,
-  Menu,
-  MenuItem,
-  Badge,
+  InputBase,
   useTheme,
-  useMediaQuery,
+  useMediaQuery
 } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -21,27 +18,31 @@ import SearchIcon from '@mui/icons-material/Search';
 import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info';
 import MailIcon from '@mui/icons-material/Mail';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import BookIcon from '@mui/icons-material/Book';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import PersonIcon from '@mui/icons-material/Person';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import logoIcon from "../assets/images/Toronto_Hub_family__logo-removebg-preview.png"
 
-const primaryColor = '#322645';
-const menuBgColor = '#3A2C4E';
-const hoverColor = '#46A897';
+//
+// Color Scheme - Updated to match HomePage gradient theme
+//
+const navBarBg = '#2C3E50';  // Dark slate blue
+const textColor = '#F0F4F8'; // Light gray-blue
+const hoverColor = '#18BC9C'; // Teal
+const searchBgColor = alpha('#ffffff', 0.15);
+const searchHoverColor = alpha('#ffffff', 0.25);
 
-// Styled Search component
+//
+// Styled Search container
+//
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha('#ffffff', 0.15),
+  backgroundColor: searchBgColor,
   '&:hover': {
-    backgroundColor: alpha('#ffffff', 0.25),
+    backgroundColor: searchHoverColor,
   },
   marginRight: theme.spacing(2),
   marginLeft: theme.spacing(2),
   width: 'auto',
+  transition: 'all 0.3s ease',
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
@@ -57,9 +58,11 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
-  padding: theme.spacing(1, 1, 1, 1),
+  padding: theme.spacing(1),
   paddingRight: `calc(1em + ${theme.spacing(4)})`,
-  transition: theme.transitions.create('width'),
+  transition: theme.transitions.create('width', {
+    duration: theme.transitions.duration.shorter,
+  }),
   width: '12ch',
   '&:focus': {
     width: '20ch',
@@ -67,20 +70,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const NavBar = () => {
-  const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [notifications] = useState(3);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -89,71 +83,136 @@ const NavBar = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     console.log('Searching for:', searchQuery);
+    // Add search logic here
   };
 
   return (
-    <Box>
-      <AppBar position="sticky" sx={{ backgroundColor: primaryColor }}>
+    <Box sx={{ 
+      position: 'sticky',
+      top: 0,
+      zIndex: 1100,
+      boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+    }}>
+      <AppBar
+        position="static"
+        sx={{
+          backgroundColor: navBarBg,
+          color: textColor,
+          backgroundImage: 'linear-gradient(to right, #2C3E50 0%, #34495E 100%)',
+        }}
+      >
         <Toolbar>
+          {/* Mobile Menu Icon */}
           {isMobile && (
             <IconButton
               edge="start"
-              color="inherit"
               aria-label="menu"
               onClick={toggleMobileMenu}
-              sx={{ mr: 2 }}
+              sx={{
+                mr: 2,
+                color: textColor,
+                '&:hover': { color: hoverColor, transform: 'scale(1.05)' },
+                transition: 'all 0.2s ease',
+              }}
             >
               <MenuIcon />
             </IconButton>
           )}
-          {/* Logo */}
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Toronto Family Hub
-          </Typography>
+
+          {/* Logo and Title */}
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              flexGrow: 1,
+            }}
+          >
+            <Box
+              component="img"
+              src={logoIcon}
+              alt="Toronto Hub Logo"
+              sx={{ 
+                width: 55, 
+                height: 55, 
+                mr: 1,
+                filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.2))',
+              }}
+            />
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{
+                color: textColor,
+                fontWeight: 'bold',
+                textShadow: '0 1px 2px rgba(0,0,0,0.2)',
+                letterSpacing: '0.5px',
+              }}
+            >
+              Toronto Family Hub
+            </Typography>
+          </Box>
 
           {/* Desktop Navigation Links */}
           {!isMobile && (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Button color="inherit" startIcon={<HomeIcon />} sx={{ textTransform: 'none' }}>
+              <Button
+                color="inherit"
+                startIcon={<HomeIcon />}
+                sx={{
+                  textTransform: 'none',
+                  color: textColor,
+                  mx: 0.5,
+                  py: 1,
+                  '&:hover': { 
+                    color: hoverColor,
+                    backgroundColor: 'rgba(255,255,255,0.05)',
+                    transform: 'translateY(-2px)',
+                  },
+                  transition: 'all 0.2s ease',
+                }}
+              >
                 Home
               </Button>
-              <Button color="inherit" startIcon={<InfoIcon />} sx={{ textTransform: 'none' }}>
+              <Button
+                color="inherit"
+                startIcon={<InfoIcon />}
+                sx={{
+                  textTransform: 'none',
+                  color: textColor,
+                  mx: 0.5,
+                  py: 1,
+                  '&:hover': { 
+                    color: hoverColor,
+                    backgroundColor: 'rgba(255,255,255,0.05)',
+                    transform: 'translateY(-2px)',
+                  },
+                  transition: 'all 0.2s ease',
+                }}
+              >
                 About
               </Button>
               <Button
                 color="inherit"
-                startIcon={<BookIcon />}
-                endIcon={<ExpandMoreIcon />}
-                onClick={handleMenuOpen}
-                sx={{ textTransform: 'none' }}
-              >
-                Services
-              </Button>
-              <Menu
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleMenuClose}
-                PaperProps={{
-                  sx: { backgroundColor: menuBgColor, color: '#fff' },
+                startIcon={<MailIcon />}
+                sx={{
+                  textTransform: 'none',
+                  color: textColor,
+                  mx: 0.5,
+                  py: 1,
+                  '&:hover': { 
+                    color: hoverColor,
+                    backgroundColor: 'rgba(255,255,255,0.05)',
+                    transform: 'translateY(-2px)',
+                  },
+                  transition: 'all 0.2s ease',
                 }}
               >
-                <MenuItem onClick={handleMenuClose} startIcon={<CalendarTodayIcon />}>
-                  Family Programs
-                </MenuItem>
-                <MenuItem onClick={handleMenuClose} startIcon={<PersonIcon />}>
-                  Counseling Services
-                </MenuItem>
-                <MenuItem onClick={handleMenuClose} startIcon={<BookIcon />}>
-                  Educational Resources
-                </MenuItem>
-              </Menu>
-              <Button color="inherit" startIcon={<MailIcon />} sx={{ textTransform: 'none' }}>
                 Contact
               </Button>
             </Box>
           )}
 
-          {/* Search Bar */}
+          {/* Desktop Search Bar */}
           {!isMobile && (
             <form onSubmit={handleSearch}>
               <Search>
@@ -162,74 +221,135 @@ const NavBar = () => {
                   inputProps={{ 'aria-label': 'search' }}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
+                  sx={{
+                    '::placeholder': {
+                      color: alpha(textColor, 0.7),
+                      opacity: 1,
+                    }
+                  }}
                 />
                 <SearchIconWrapper>
-                  <IconButton type="submit" sx={{ p: 0, color: 'inherit' }}>
+                  <IconButton 
+                    type="submit" 
+                    sx={{ 
+                      p: 0, 
+                      color: 'inherit',
+                      '&:hover': { color: hoverColor },
+                      transition: 'color 0.2s ease',
+                    }}
+                  >
                     <SearchIcon />
                   </IconButton>
                 </SearchIconWrapper>
               </Search>
             </form>
           )}
-
-          {/* Notification and Login Buttons */}
-          {!isMobile && (
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <IconButton color="inherit">
-                <Badge badgeContent={notifications} color="error">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
-              <Button color="inherit" startIcon={<PersonIcon />} sx={{ textTransform: 'none' }}>
-                Login
-              </Button>
-            </Box>
-          )}
         </Toolbar>
       </AppBar>
 
-      {/* Mobile Menu */}
-      {isMobile && mobileMenuOpen && (
-        <Box sx={{ backgroundColor: primaryColor, p: 2 }}>
-          <Button fullWidth color="inherit" startIcon={<HomeIcon />} onClick={toggleMobileMenu}>
-            Home
-          </Button>
-          <Button fullWidth color="inherit" startIcon={<InfoIcon />} onClick={toggleMobileMenu}>
-            About
-          </Button>
-          <Button
-            fullWidth
-            color="inherit"
-            startIcon={<MailIcon />}
-            onClick={toggleMobileMenu}
-          >
-            Contact
-          </Button>
-          <Box component="form" onSubmit={handleSearch} sx={{ mt: 2 }}>
-            <Search sx={{ width: '100%' }}>
-              <StyledInputBase
-                placeholder="Search…"
-                fullWidth
-                inputProps={{ 'aria-label': 'search' }}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              <SearchIconWrapper>
-                <IconButton type="submit" sx={{ p: 0, color: 'inherit' }}>
-                  <SearchIcon />
-                </IconButton>
-              </SearchIconWrapper>
-            </Search>
-          </Box>
-          <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <IconButton color="inherit">
-              <Badge badgeContent={notifications} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <Button color="inherit" startIcon={<PersonIcon />} onClick={toggleMobileMenu} sx={{ textTransform: 'none' }}>
-              Login
+      {/* Mobile Menu - Enhanced with smooth animation */}
+      {isMobile && (
+        <Box 
+          sx={{ 
+            backgroundColor: navBarBg,
+            backgroundImage: 'linear-gradient(to bottom, #2C3E50 0%, #34495E 100%)',
+            overflow: 'hidden',
+            maxHeight: mobileMenuOpen ? '300px' : '0px',
+            transition: 'all 0.3s ease-in-out',
+            boxShadow: mobileMenuOpen ? '0 4px 8px rgba(0,0,0,0.2)' : 'none',
+          }}
+        >
+          <Box sx={{ p: mobileMenuOpen ? 2 : 0 }}>
+            <Button
+              fullWidth
+              startIcon={<HomeIcon />}
+              onClick={toggleMobileMenu}
+              sx={{
+                justifyContent: 'flex-start',
+                color: textColor,
+                py: 1.5,
+                my: 0.5,
+                borderRadius: 1,
+                '&:hover': { 
+                  color: hoverColor,
+                  backgroundColor: 'rgba(255,255,255,0.05)',
+                },
+                transition: 'all 0.2s ease',
+              }}
+            >
+              Home
             </Button>
+            <Button
+              fullWidth
+              startIcon={<InfoIcon />}
+              onClick={toggleMobileMenu}
+              sx={{
+                justifyContent: 'flex-start',
+                color: textColor,
+                py: 1.5,
+                my: 0.5,
+                borderRadius: 1,
+                '&:hover': { 
+                  color: hoverColor,
+                  backgroundColor: 'rgba(255,255,255,0.05)',
+                },
+                transition: 'all 0.2s ease',
+              }}
+            >
+              About
+            </Button>
+            <Button
+              fullWidth
+              startIcon={<MailIcon />}
+              onClick={toggleMobileMenu}
+              sx={{
+                justifyContent: 'flex-start',
+                color: textColor,
+                py: 1.5,
+                my: 0.5,
+                borderRadius: 1,
+                '&:hover': { 
+                  color: hoverColor,
+                  backgroundColor: 'rgba(255,255,255,0.05)',
+                },
+                transition: 'all 0.2s ease',
+              }}
+            >
+              Contact
+            </Button>
+            <Box component="form" onSubmit={handleSearch} sx={{ mt: 2 }}>
+              <Search sx={{ width: '100%', mx: 0 }}>
+                <StyledInputBase
+                  placeholder="Search…"
+                  fullWidth
+                  inputProps={{ 'aria-label': 'search' }}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  sx={{
+                    width: '100%',
+                    '&:focus': {
+                      width: '100%',
+                    },
+                    '::placeholder': {
+                      color: alpha(textColor, 0.7),
+                      opacity: 1,
+                    }
+                  }}
+                />
+                <SearchIconWrapper>
+                  <IconButton 
+                    type="submit" 
+                    sx={{ 
+                      p: 0, 
+                      color: 'inherit',
+                      '&:hover': { color: hoverColor },
+                    }}
+                  >
+                    <SearchIcon />
+                  </IconButton>
+                </SearchIconWrapper>
+              </Search>
+            </Box>
           </Box>
         </Box>
       )}

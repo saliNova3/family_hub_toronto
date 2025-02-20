@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from app.routers import centres, centres_cache
 from fastapi.middleware.cors import CORSMiddleware
+from app.routers import geocode
+from app.routers import geosearch , centres
 
 
 app = FastAPI()
@@ -23,6 +25,9 @@ app.add_middleware(
 # Include the centres router with prefix
 app.include_router(centres.router, prefix="/api")
 app.include_router(centres_cache.router, prefix="/api")
+app.include_router(geocode.router, prefix="/api")
+app.include_router(geosearch.router, prefix="/api")
+
 
 @app.get('/')
 async def read_root():

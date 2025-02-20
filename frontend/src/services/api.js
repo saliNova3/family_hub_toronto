@@ -32,3 +32,40 @@ export const refreshCentresCache = async () => {
     throw error;
   }
 };
+
+
+export async function geocodeAddress(address) {
+  try {
+    const response = await fetch("http://127.0.0.1:8000/api/geocode", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ address }),
+    });
+    if (!response.ok) {
+      throw new Error(`Geocoding failed: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data; // { lat: ..., lng: ... }
+  } catch (error) {
+    console.error("Error in geocodeAddress:", error);
+    throw error;
+  }
+}
+
+export async function fetchNearestCenters(lat, lng, max_distance = 5000) {
+  try {
+    const response = await fetch("http://127.0.0.1:8000/api/centres/near", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ lat, lng, max_distance }),
+    });
+    if (!response.ok) {
+      throw new Error(`Fetching centers failed: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data; // array of centers with distance
+  } catch (error) {
+    console.error("Error in fetchNearestCenters:", error);
+    throw error;
+  }
+}
