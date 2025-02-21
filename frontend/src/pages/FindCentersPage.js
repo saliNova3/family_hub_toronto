@@ -32,6 +32,13 @@ function FindCentersPage() {
   // Handle address search
   const handleAddressSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validate address input
+    if (!address.trim()) {
+      setErrorMessage("Please enter an address or postal code to search.");
+      return;
+    }
+    
     setErrorMessage("");
     setResults([]);
     setIsLoading(true);
@@ -112,9 +119,20 @@ function FindCentersPage() {
               ),
             }}
           />
-          <Button type="submit" variant="contained" disabled={isLoading} sx={{ borderRadius: 2, py: 1.5, backgroundColor: "#2e3b55", "&:hover": { backgroundColor: "#1e2b45" }, minWidth: { xs: "100%", sm: "150px" } }}>
-            {isLoading ? "Searching..." : "Search"}
-          </Button>
+          <Button 
+              type="submit" 
+              variant="contained" 
+              disabled={isLoading} 
+              sx={{ 
+                borderRadius: 2, 
+                py: 1.5, 
+                backgroundColor: "#2e3b55", 
+                "&:hover": { backgroundColor: "#1e2b45" }, 
+                minWidth: { xs: "100%", sm: "150px" } 
+              }}
+            >
+              {isLoading ? "Searching..." : "Search"}
+            </Button>
         </Box>
 
         {/* Geolocation Button */}
@@ -153,46 +171,83 @@ function FindCentersPage() {
           </Paper>
         )}
 
-        {!isLoading && results.length > 0 && (
-          <Box sx={{ mt: 5 }}>
-            <Typography variant="h5" sx={{ fontWeight: 600, mb: 3, color: "#2e3b55" }}>
-              Centers Near You
-            </Typography>
-            {results.map((center, idx) => {
-                console.log("Center data:", center); // This will log each center object
-                
-                return (
-                    <Card key={idx} sx={{ mb: 2, p: 2, border: "1px solid rgba(0, 0, 0, 0.08)", borderRadius: 2 }}>
-                    <CardContent>
-                        <Typography variant="h6" sx={{ fontWeight: 600, color: "#2e3b55" }}>
-                        {center.program_name}
-                        </Typography>
-                        <Typography variant="body2" sx={{ color: "#5a6a85", mb: 1 }}>
-                        {center.full_address}
-                        </Typography>
-                        <Chip label={center.distance ? `${(center.distance / 1000).toFixed(2)} km away` : "Distance not available"} sx={{ backgroundColor: "rgba(46,59,85,0.08)", color: "#2e3b55", fontWeight: 500 }} />
-                        <Button
-                        variant="outlined"
-                        size="small"
-                        onClick={() => navigate(`/centres/loc/${center.loc_id}`)}
-                        sx={{
-                            mt: 2,
-                            borderColor: "#2e3b55",
-                            color: "#2e3b55",
-                            borderRadius: 2,
-                            "&:hover": {
-                            backgroundColor: "rgba(46, 59, 85, 0.04)",
-                            },
-                        }}
-                        >
-                        More Details
-                        </Button>
-                    </CardContent>
-                    </Card>
-                );
-                })}
-          </Box>
-        )}
+{!isLoading && results.length > 0 && (
+  <Box sx={{ mt: 4 }}>
+    <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, color: "#2e3b55", mb: 3 }}>
+      Centers Near You
+    </Typography>
+    
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      {results.map((center, idx) => (
+        <Card 
+          key={center.loc_id} 
+          elevation={1}
+          sx={{
+            borderRadius: 2,
+            transition: "all 0.3s ease",
+            border: "1px solid #e0e0e0",
+            "&:hover": {
+              boxShadow: 3,
+              transform: "translateY(-2px)"
+            }
+          }}
+        >
+          <CardContent sx={{ 
+            p: { xs: 2, sm: 3 },
+            "&:last-child": { pb: { xs: 2, sm: 3 } },
+            display: "flex", 
+            flexDirection: { xs: "column", sm: "row" }, 
+            alignItems: { sm: "center" },
+            justifyContent: "space-between"
+          }}>
+            <Box sx={{ mb: { xs: 2, sm: 0 } }}>
+              <Typography variant="h6" component="h3" sx={{ 
+                color: "#2e3b55",
+                fontSize: { xs: "1.1rem", sm: "1.25rem" },
+                fontWeight: 500
+              }}>
+                {center.program_name}
+              </Typography>
+              
+              <Box sx={{ display: "flex", alignItems: "flex-start", mt: 1 }}>
+                <PlaceIcon sx={{ color: "#5a6a85", fontSize: "0.9rem", mr: 0.5, mt: 0.3 }} />
+                <Typography variant="body2" sx={{ 
+                  color: "#5a6a85",
+                  fontSize: { xs: "0.875rem", sm: "1rem" }
+                }}>
+                  {center.full_address}
+                </Typography>
+              </Box>
+            </Box>
+            
+            <Button
+              onClick={() => navigate(`/centres/loc/${center.loc_id}`)}
+              variant="outlined"
+              size="medium"
+              endIcon={<LocationOnIcon />}
+              aria-label={`View more details about ${center.program_name}`}
+              sx={{
+                borderColor: "#2e3b55",
+                color: "#2e3b55",
+                borderRadius: 2,
+                px: { xs: 2, sm: 3 },
+                py: 1,
+                minWidth: { xs: "100%", sm: "auto" },
+                fontWeight: 500,
+                "&:hover": {
+                  backgroundColor: "rgba(46, 59, 85, 0.04)",
+                  borderColor: "#1e2b45",
+                }
+              }}
+            >
+              More Details
+            </Button>
+          </CardContent>
+        </Card>
+      ))}
+    </Box>
+  </Box>
+)}
       </Paper>
     </Container>
   );

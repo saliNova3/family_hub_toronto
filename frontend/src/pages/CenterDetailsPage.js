@@ -17,6 +17,7 @@ import {
   Link,
   Stack,
   Avatar,
+  Tooltip,
 } from "@mui/material";
 import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
@@ -25,6 +26,8 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PersonIcon from "@mui/icons-material/Person";
 import PlaceIcon from "@mui/icons-material/Place";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import MapIcon from "@mui/icons-material/Map";
+import DirectionsIcon from "@mui/icons-material/Directions";
 
 function CenterDetailsPage() {
   const { loc_id } = useParams();
@@ -51,6 +54,12 @@ function CenterDetailsPage() {
     }
     fetchCenter();
   }, [loc_id]);
+
+  // Create Google Maps URL from address
+  const getGoogleMapsUrl = (address) => {
+    if (!address) return '';
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+  };
 
   // Format hours function
   const formatSchedule = (scheduleText) => {
@@ -106,6 +115,7 @@ function CenterDetailsPage() {
 
   const dropInSchedule = formatSchedule(center.dropinHours);
   const registeredSchedule = formatSchedule(center.registeredHours);
+  const mapUrl = getGoogleMapsUrl(center.full_address);
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -130,11 +140,49 @@ function CenterDetailsPage() {
           <Typography variant="h4" gutterBottom sx={{ fontWeight: 700 }}>
             {center.program_name}
           </Typography>
-          <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
-            <PlaceIcon sx={{ mr: 1, fontSize: 20 }} />
-            <Typography variant="body1">
-              {center.full_address}
-            </Typography>
+          <Box sx={{ display: "flex", alignItems: "flex-start", mt: 2 }}>
+            <PlaceIcon sx={{ mr: 1, fontSize: 20, mt: 0.5 }} />
+            <Box>
+              <Typography variant="body1">
+                {center.full_address}
+              </Typography>
+              <Box sx={{ mt: 1, display: "flex", gap: 1 }}>
+                <Button 
+                  variant="contained" 
+                  size="small" 
+                  startIcon={<MapIcon />}
+                  href={mapUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  sx={{ 
+                    bgcolor: "rgba(255,255,255,0.15)", 
+                    "&:hover": { bgcolor: "rgba(255,255,255,0.25)" }
+                  }}
+                >
+                  View on Maps
+                </Button>
+                <Tooltip title="Get directions">
+                  <Button 
+                    variant="outlined" 
+                    size="small" 
+                    startIcon={<DirectionsIcon />}
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(center.full_address)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={{ 
+                      borderColor: "rgba(255,255,255,0.3)",
+                      color: "white",
+                      "&:hover": { 
+                        borderColor: "rgba(255,255,255,0.6)",
+                        bgcolor: "rgba(255,255,255,0.05)"
+                      }
+                    }}
+                  >
+                    Directions
+                  </Button>
+                </Tooltip>
+              </Box>
+            </Box>
           </Box>
         </Box>
 
@@ -180,6 +228,8 @@ function CenterDetailsPage() {
                           sx={{ 
                             color: "#2e3b55", 
                             textDecoration: "none",
+                            display: "flex",
+                            alignItems: "center",
                             "&:hover": { textDecoration: "underline" }
                           }}
                         >
@@ -237,23 +287,50 @@ function CenterDetailsPage() {
                 </CardContent>
               </Card>
 
-              {/* Phone Call Button for Mobile */}
-              {isMobile && center.phone && (
-                <Button 
-                  variant="contained" 
-                  startIcon={<PhoneIcon />}
-                  fullWidth
-                  href={`tel:${center.phone}`}
-                  sx={{ 
-                    mb: 3, 
-                    py: 1.5, 
-                    borderRadius: 2,
-                    bgcolor: "#2e3b55",
-                    "&:hover": { bgcolor: "#1e2b45" }
-                  }}
-                >
-                  Call Center
-                </Button>
+              {/* Quick Action Buttons for Mobile */}
+              {isMobile && (
+                <Grid container spacing={2} sx={{ mb: 3 }}>
+                  {center.phone && (
+                    <Grid item xs={6}>
+                      <Button 
+                        variant="contained" 
+                        startIcon={<PhoneIcon />}
+                        fullWidth
+                        href={`tel:${center.phone}`}
+                        sx={{ 
+                          py: 1.5, 
+                          borderRadius: 2,
+                          bgcolor: "#2e3b55",
+                          "&:hover": { bgcolor: "#1e2b45" }
+                        }}
+                      >
+                        Call
+                      </Button>
+                    </Grid>
+                  )}
+                  <Grid item xs={center.phone ? 6 : 12}>
+                    <Button 
+                      variant="outlined" 
+                      startIcon={<DirectionsIcon />}
+                      fullWidth
+                      href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(center.full_address)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      sx={{ 
+                        py: 1.5, 
+                        borderRadius: 2,
+                        borderColor: "#2e3b55",
+                        color: "#2e3b55",
+                        "&:hover": { 
+                          borderColor: "#1e2b45",
+                          bgcolor: "rgba(46, 59, 85, 0.04)"
+                        }
+                      }}
+                    >
+                      Directions
+                    </Button>
+                  </Grid>
+                </Grid>
               )}
             </Grid>
 

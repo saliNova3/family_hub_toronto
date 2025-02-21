@@ -1,4 +1,3 @@
-// src/components/NavBar.jsx
 
 import React, { useState } from 'react';
 import {
@@ -19,7 +18,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info';
 import MailIcon from '@mui/icons-material/Mail';
 import logoIcon from "../assets/images/Toronto_Hub_family__logo-removebg-preview.png"
-
+import { Link } from "react-router";
 //
 // Color Scheme - Updated to match HomePage gradient theme
 //
@@ -174,41 +173,26 @@ const NavBar = () => {
                 Home
               </Button>
               <Button
-                color="inherit"
-                startIcon={<InfoIcon />}
-                sx={{
-                  textTransform: 'none',
-                  color: textColor,
-                  mx: 0.5,
-                  py: 1,
-                  '&:hover': { 
-                    color: hoverColor,
-                    backgroundColor: 'rgba(255,255,255,0.05)',
-                    transform: 'translateY(-2px)',
-                  },
-                  transition: 'all 0.2s ease',
-                }}
-              >
-                About
-              </Button>
-              <Button
-                color="inherit"
-                startIcon={<MailIcon />}
-                sx={{
-                  textTransform: 'none',
-                  color: textColor,
-                  mx: 0.5,
-                  py: 1,
-                  '&:hover': { 
-                    color: hoverColor,
-                    backgroundColor: 'rgba(255,255,255,0.05)',
-                    transform: 'translateY(-2px)',
-                  },
-                  transition: 'all 0.2s ease',
-                }}
-              >
-                Contact
-              </Button>
+  color="inherit"
+  startIcon={<InfoIcon />}
+  component={Link}  // Import Link from react-router-dom
+  to="/about"       // This needs to match your route path
+  sx={{
+    textTransform: 'none',
+    color: textColor,
+    mx: 0.5,
+    py: 1,
+    '&:hover': { 
+      color: hoverColor,
+      backgroundColor: 'rgba(255,255,255,0.05)',
+      transform: 'translateY(-2px)',
+    },
+    transition: 'all 0.2s ease',
+  }}
+>
+  About
+</Button>
+              
             </Box>
           )}
 
@@ -280,43 +264,26 @@ const NavBar = () => {
               Home
             </Button>
             <Button
-              fullWidth
-              startIcon={<InfoIcon />}
-              onClick={toggleMobileMenu}
-              sx={{
-                justifyContent: 'flex-start',
-                color: textColor,
-                py: 1.5,
-                my: 0.5,
-                borderRadius: 1,
-                '&:hover': { 
-                  color: hoverColor,
-                  backgroundColor: 'rgba(255,255,255,0.05)',
-                },
-                transition: 'all 0.2s ease',
-              }}
-            >
-              About
-            </Button>
-            <Button
-              fullWidth
-              startIcon={<MailIcon />}
-              onClick={toggleMobileMenu}
-              sx={{
-                justifyContent: 'flex-start',
-                color: textColor,
-                py: 1.5,
-                my: 0.5,
-                borderRadius: 1,
-                '&:hover': { 
-                  color: hoverColor,
-                  backgroundColor: 'rgba(255,255,255,0.05)',
-                },
-                transition: 'all 0.2s ease',
-              }}
-            >
-              Contact
-            </Button>
+  fullWidth
+  startIcon={<InfoIcon />}
+  component={Link}  // Import Link from react-router-dom
+  to="/about"       // This needs to match your route path
+  sx={{
+    justifyContent: 'flex-start',
+    color: textColor,
+    py: 1.5,
+    my: 0.5,
+    borderRadius: 1,
+    '&:hover': { 
+      color: hoverColor,
+      backgroundColor: 'rgba(255,255,255,0.05)',
+    },
+    transition: 'all 0.2s ease',
+  }}
+>
+  About
+</Button>
+            
             <Box component="form" onSubmit={handleSearch} sx={{ mt: 2 }}>
               <Search sx={{ width: '100%', mx: 0 }}>
                 <StyledInputBase
