@@ -186,6 +186,7 @@ const HomePage = () => {
                     <Button
                       variant="outlined"
                       size="large"
+                      href='/about'
                       sx={{
                         borderColor: "#2C3E50",
                         color: "#2C3E50",
