@@ -1,5 +1,7 @@
 
-const API_BASE_URL = "http://127.0.0.1:8000/api"; 
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://127.0.0.1:8000/api"; 
+
+
 
 // Function to get cached centres data
 export const getCachedCentres = async () => {
@@ -36,7 +38,7 @@ export const refreshCentresCache = async () => {
 
 export async function geocodeAddress(address) {
   try {
-    const response = await fetch("http://127.0.0.1:8000/api/geocode", {
+    const response = await fetch(`${API_BASE_URL}/api/geocode`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ address }),
@@ -54,7 +56,7 @@ export async function geocodeAddress(address) {
 
 export async function fetchNearestCenters(lat, lng, max_distance = 5000) {
   try {
-    const response = await fetch("http://127.0.0.1:8000/api/centres/near", {
+    const response = await fetch(`${API_BASE_URL}/api/centres/near`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ lat, lng, max_distance }),
