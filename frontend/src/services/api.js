@@ -38,7 +38,8 @@ export const refreshCentresCache = async () => {
 
 export async function geocodeAddress(address) {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/geocode`, {
+    console.log("Requesting geocode for:", address);
+    const response = await fetch(`${API_BASE_URL}/geocode`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ address }),
