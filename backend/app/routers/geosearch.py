@@ -18,6 +18,10 @@ async def get_nearest_centers(query: NearestCentersRequest):
     # Use the collection that holds individual center records
     collection = database['toronto_family_centres']
 
+    # Add debug logging
+    print(f"Received query: {query}")
+    print(f"Collection exists: {await collection.count_documents({})}")
+
     # Create a GeoJSON Point from the user's coordinates
     user_location = {
         "type": "Point",

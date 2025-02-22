@@ -10,7 +10,7 @@ app = FastAPI()
 
 # Configure CORS
 origins = [
-    "http://localhost:3000",  # Frontend origin during development
+    "http://localhost:3001",  # Frontend origin during development
     "https://toronto-family-hub-frontend.onrender.com"  # Deployed frontend
 ]
 
