@@ -18,7 +18,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info';
 import MailIcon from '@mui/icons-material/Mail';
 import logoIcon from "../assets/images/Toronto_Hub_family__logo-removebg-preview.png"
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 //
 // Color Scheme - Updated to match HomePage gradient theme
 //

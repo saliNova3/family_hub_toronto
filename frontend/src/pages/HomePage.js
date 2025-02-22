@@ -11,7 +11,7 @@ import { useInView } from 'react-intersection-observer';
 import childcareCenters from "../assets/images/Childcare_Centers.png";
 import ParentingWorkShops from "../assets/images/Parenting_Workshops_community_workshops.png"
 import FamilyFriendly from "../assets/images/Family_friendly.png"
-import { useNavigate, Link } from "react-router"; 
+import { useNavigate, Link } from "react-router-dom"; 
 
 
 const HomePage = () => {

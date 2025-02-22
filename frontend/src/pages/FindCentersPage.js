@@ -15,7 +15,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import PlaceIcon from "@mui/icons-material/Place";
 import { geocodeAddress, fetchNearestCenters } from "../services/api";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_GEOCODING_API_KEY;
