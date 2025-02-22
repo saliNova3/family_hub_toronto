@@ -8,7 +8,6 @@ import About from './pages/About';
 
 function App() {
   return (
-    
       <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
