@@ -11,7 +11,7 @@ import { useInView } from 'react-intersection-observer';
 import childcareCenters from "../assets/images/Childcare_Centers.png";
 import ParentingWorkShops from "../assets/images/Parenting_Workshops_community_workshops.png"
 import FamilyFriendly from "../assets/images/Family_friendly.png"
-import { useNavigate } from "react-router"; 
+import { useNavigate, Link } from "react-router"; 
 
 
 const HomePage = () => {
@@ -188,7 +188,8 @@ const HomePage = () => {
                     <Button
                       variant="outlined"
                       size="large"
-                      href='/about'
+                      component={Link}  
+                      to="/about" 
                       sx={{
                         borderColor: "#2C3E50",
                         color: "#2C3E50",
