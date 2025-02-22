@@ -37,10 +37,12 @@ function CenterDetailsPage() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
+  const API_BASE_URL =  process.env.REACT_APP_BACKEND_URL || "http://127.0.0.1:8000/api";
+
   useEffect(() => {
     async function fetchCenter() {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/centres/loc/${loc_id}`);
+        const response = await fetch(`${API_BASE_URL}/centres/loc/${loc_id}`);
         if (!response.ok) {
           throw new Error(`Error fetching center: ${response.statusText}`);
         }
