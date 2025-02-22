@@ -64,7 +64,7 @@ const HomePage = () => {
     <>
       <NavBar />
 
-      {console.log( "url",process.env.REACT_APP_BACKEND_URL)}
+      {console.log( "url: ",process.env.REACT_APP_BACKEND_URL)}
       
       {/* Main container with improved gradient */}
       <Box
